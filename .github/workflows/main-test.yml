@@ -80,6 +80,6 @@ jobs:
       - name: Deploy CloudFormation Stack
         uses: aws-actions/aws-cloudformation-github-deploy@v1
         with:
-          name: MyLambdaStack
+          name: MyLambdaStack-prod
           template: templates/cft-prod.yml
           capabilities: CAPABILITY_IAM # Required for IAM role creation
