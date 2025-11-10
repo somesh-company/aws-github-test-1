@@ -49,6 +49,12 @@ jobs:
         run: |
             aws s3 cp layer.zip s3://lambda-layers3969/
             aws s3 cp api-lambda-1.py.zip s3://lambda-layers3969/
+      - name: Deploy CloudFormation Stack
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: MyLambdaStack
+          template: templates/cft-test-1.yml
+          capabilities: CAPABILITY_IAM # Required for IAM role creation
   deploy-prod:
     runs-on: ubuntu-latest
     environment: Production # Associate with a 'prod' environment in GitHub
@@ -68,3 +74,9 @@ jobs:
         run: |
             aws s3 cp layer.zip s3://lambda-layers3969-prod/
             aws s3 cp api-lambda-1.py.zip s3://lambda-layers3969-prod/
+      - name: Deploy CloudFormation Stack
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: MyLambdaStack
+          template: templates/cft-test-1.yml
+          capabilities: CAPABILITY_IAM # Required for IAM role creation
