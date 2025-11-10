@@ -61,6 +61,8 @@ jobs:
     needs: deploy-dev # This job depends on 'deploy-dev' succeeding
     if: success() # Only run if 'deploy-dev' was successful
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
