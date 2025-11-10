@@ -28,8 +28,9 @@ jobs:
       - name: Package Lambda Layers and copy to s3
         run: |
           pwd
-          pip install -r requirements.txt -t packages/
-          zip -r layer.zip packages/
+          mkdir -p python/lib/python3.13/site-packages
+          pip install -r requirements.txt -t python/lib/python3.13/site-packages
+          zip -r layer.zip python/ 
           pwd
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
