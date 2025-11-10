@@ -35,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
            name: zip-files
-           path: lambda-functions
+           path: artifacts-lambda
 
       - name: Configure AWS credentials for Dev
         uses: aws-actions/configure-aws-credentials@v4
