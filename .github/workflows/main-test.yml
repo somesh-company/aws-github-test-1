@@ -1,0 +1,47 @@
+name: Deploy to AWS Environments 
+
+on:
+  push:
+    branches:
+      - main # Trigger on pushes to the main branch
+
+jobs:
+  deploy-dev:
+    runs-on: ubuntu-latest
+    environment: Development # Associate with a 'Development' environment in GitHub to AWS Dev account
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13' # Specify your desired Python version
+      
+      - name: Zip Lamda function
+        run: |
+         pwd
+         zip -r api-lambda-1.py.zip .
+         pwd
+      
+      - name: Package Lambda Layers and copy to s3
+        run: |
+          pwd
+          pip install -r requirements.txt -t packages/
+          zip -r layer.zip packages/
+          pwd
+      - name: Upload artifacts
+        uses: actions/upload-artifacts@v4
+        with:
+           name: zip-files
+           path: lambda-functions
+
+      - name: Configure AWS credentials for Dev
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEV_ROLE_ARN }}
+          aws-region: us-east-1 # Replace with your desired region
+
+      - name: Deploy to Dev AWS Account
+        run: |
+            aws s3 cp layer.zip s3://lambda-layers3969/
+            aws s3 cp api-lambda-1.py.zip s3://lambda-layers3969/
