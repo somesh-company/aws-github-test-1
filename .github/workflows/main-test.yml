@@ -49,3 +49,22 @@ jobs:
         run: |
             aws s3 cp layer.zip s3://lambda-layers3969/
             aws s3 cp api-lambda-1.py.zip s3://lambda-layers3969/
+  deploy-prod:
+    runs-on: ubuntu-latest
+    environment: Production # Associate with a 'prod' environment in GitHub
+    needs: deploy-dev # This job depends on 'deploy-dev' succeeding
+    if: success() # Only run if 'deploy-dev' was successful
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: zip-files
+      - name: Configure AWS credentials for Prod
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_PROD_ROLE_ARN }}
+          aws-region: us-east-1 # Replace with your desired region
+      - name: Deploy to Prod AWS Account
+        run: |
+            aws s3 cp layer.zip s3://lambda-layers3969-prod/
+            aws s3 cp api-lambda-1.py.zip s3://lambda-layers3969-prod/
