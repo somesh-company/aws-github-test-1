@@ -20,7 +20,7 @@ Resources:
       Handler: api-function.lambda_handler
       Runtime: python3.13
       Code:
-        S3Bucket: lambda-layers3969 # Reference to your S3 bucket
+        S3Bucket: lambda-layers3969-prod # Reference to your S3 bucket
         S3Key: api-lambda-1.py.zip # Path to your function's zip file in S3
       Role: !GetAtt LambdaExecutionRole.Arn
       Layers:

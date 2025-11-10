@@ -78,5 +78,5 @@ jobs:
         uses: aws-actions/aws-cloudformation-github-deploy@v1
         with:
           name: MyLambdaStack
-          template: templates/cft-test-1.yml
+          template: templates/cft-prod.yml
           capabilities: CAPABILITY_IAM # Required for IAM role creation
